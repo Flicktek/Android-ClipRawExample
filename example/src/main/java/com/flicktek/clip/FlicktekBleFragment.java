@@ -127,10 +127,15 @@ public class FlicktekBleFragment extends Fragment implements View.OnClickListene
         if (mainActivity.mTracker == null)
             return;
 
+        String mac = FlicktekManager.getInstance().getMacAddress();
+        if (mac == null) {
+            mac = "Mac N/A";
+        }
+
         mainActivity.mTracker.send(new HitBuilders.EventBuilder()
-                .setCategory("Example")
+                .setCategory(mac)
                 .setAction(action)
-                .setLabel(FlicktekManager.getInstance().getMacAddress())
+                .setLabel(mac)
                 .build());
     }
 

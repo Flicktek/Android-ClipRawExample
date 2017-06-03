@@ -1,0 +1,3 @@
+[submodule "Android-ClipSDK"]
+	path = Android-ClipSDK
+	url = git@github.com:Flicktek/Android-ClipSDK.git

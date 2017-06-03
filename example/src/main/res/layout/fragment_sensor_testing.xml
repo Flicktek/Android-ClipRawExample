@@ -1,0 +1,331 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                xmlns:tools="http://schemas.android.com/tools"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@color/black_86p"
+                android:orientation="vertical">
+
+    <!-- The size of text below must be fixed, therefore dp are used instead of sp -->
+
+    <RelativeLayout
+        android:id="@+id/top_header"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <LinearLayout
+            android:id="@+id/ll_layout_device"
+            android:layout_width="wrap_content"
+            android:layout_height="40dp"
+            android:layout_alignParentLeft="true"
+            android:layout_marginLeft="5dp"
+
+            android:gravity="center"
+            android:orientation="horizontal">
+
+            <TextView
+                android:id="@+id/tv_current_menu"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentTop="true"
+                android:layout_marginRight="15dp"
+                android:layout_marginTop="2dp"
+
+                android:text="Testing"
+                android:textAppearance="?android:attr/textAppearanceSmallInverse"
+                android:textColor="@color/dashTextColor"
+                android:textSize="22dp"/>
+
+            <TextView
+                android:id="@+id/tv_device_name"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentTop="true"
+                android:layout_marginRight="15dp"
+                android:layout_marginTop="2dp"
+                android:text=""
+                android:textAppearance="?android:attr/textAppearanceSmallInverse"
+                android:textColor="@color/dashTextColor"
+                android:textSize="22dp"/>
+
+            <TextView
+                android:id="@+id/tv_device_mac"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentTop="true"
+                android:layout_marginRight="15dp"
+                android:layout_marginTop="2dp"
+                android:text=""
+                android:textAppearance="?android:attr/textAppearanceSmallInverse"
+                android:textColor="@color/dashTextColor"
+                android:textSize="22dp"/>
+
+            <TextView
+                android:id="@+id/tv_last_action"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="5dp"
+                android:text=""
+                android:textAppearance="?android:attr/textAppearanceSmallInverse"
+                android:textColor="@color/dashTextColor"
+                android:textSize="22dp"/>
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/ll_battery"
+            android:layout_width="wrap_content"
+            android:layout_height="40dp"
+            android:layout_alignParentEnd="true"
+            android:layout_marginRight="5dp"
+            android:orientation="horizontal">
+
+            <TextView
+                android:id="@+id/tv_charging"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+
+                android:layout_marginRight="15dp"
+
+                android:text="[Unknown state]"
+                android:textAppearance="?android:attr/textAppearanceSmallInverse"
+                android:textColor="@color/dashTextColor"
+                android:textSize="22dp"/>
+
+            <TextView
+                android:id="@+id/tv_battery_level"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentTop="true"
+                android:layout_marginRight="5dp"
+                android:layout_marginTop="2dp"
+                android:text="No battery"
+                android:textAppearance="?android:attr/textAppearanceSmallInverse"
+                android:textColor="@color/dashTextColor"
+                android:textSize="22dp"/>
+
+            <ImageView
+                android:id="@+id/iv_battery"
+                android:layout_width="40dp"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="3dp"
+                android:src="@drawable/ic_batt_empty"/>
+        </LinearLayout>
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@+id/top_header"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
+        android:gravity="center"
+        android:orientation="vertical">
+
+        <LinearLayout
+            android:id="@+id/controller_device"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="5dp">
+
+            <TextView
+                android:id="@+id/capture_text"
+                android:layout_width="200dp"
+                android:layout_height="42sp"
+                android:layout_centerHorizontal="true"
+                android:freezesText="true"
+                android:gravity="center"
+                android:text="Waiting..."
+                android:textColor="#FFFFFF"
+                android:textSize="14sp"
+                android:visibility="visible"/>
+
+            <SeekBar
+                android:id="@+id/seekBar1"
+                style="?android:attr/seekBarStyle"
+                android:layout_width="200dp"
+                android:layout_height="24dp"
+                android:layout_margin="0dp"
+                android:layout_toRightOf="@id/capture_text"
+                android:minWidth="200dp"
+                android:padding="0dp"
+                />
+
+        </LinearLayout>
+
+        <com.jjoe64.graphview.GraphView
+            android:id="@+id/graph1"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_below="@id/controller_device"/>
+
+    </RelativeLayout>
+
+    <ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="6dp"/>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:gravity="center"
+
+        android:orientation="vertical">
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="40dp"
+            android:layout_marginBottom="5dp"
+            android:layout_marginLeft="5dp"
+            android:gravity="center"
+            android:orientation="horizontal">
+
+            <ImageView
+                android:id="@+id/check_connectivity"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:layout_marginEnd="6dp"
+                android:scaleType="fitCenter"
+                android:src="@drawable/ic_rssi_3_bars"
+                android:tint="@color/red"/>
+
+            <ImageView
+                android:id="@+id/check_button"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:layout_marginEnd="6dp"
+                android:scaleType="fitCenter"
+                android:src="@drawable/ic_uart_play"
+                android:tint="@color/red"/>
+
+            <ImageView
+                android:id="@+id/check_lines"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:layout_marginEnd="6dp"
+                android:scaleType="fitCenter"
+                android:src="@drawable/ic_view_headline_black_48dp"
+                android:tint="@color/red"/>
+
+            <ImageView
+                android:id="@+id/check_sensor1"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:layout_marginEnd="6dp"
+                android:scaleType="fitCenter"
+                android:src="@drawable/ic_looks_one_black_48dp"
+                android:tint="@color/red"/>
+
+            <ImageView
+                android:id="@+id/check_sensor2"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:layout_marginEnd="6dp"
+                android:src="@drawable/ic_looks_two_black_48dp"
+                android:tint="@color/red"/>
+
+            <ImageView
+                android:id="@+id/check_sensor3"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:layout_marginEnd="6dp"
+                android:src="@drawable/ic_looks_3_black_48dp"
+                android:tint="@color/red"/>
+
+            <ImageView
+                android:id="@+id/check_sensor4"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:layout_marginEnd="6dp"
+                android:src="@drawable/ic_looks_4_black_48dp"
+                android:tint="@color/red"/>
+
+            <ImageView
+                android:id="@+id/check_charging"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:layout_marginEnd="6dp"
+                android:src="@drawable/ic_power_black_48dp"
+                android:tint="@color/red"/>
+
+            <ImageView
+                android:id="@+id/check_led_1"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:layout_marginEnd="6dp"
+                android:src="@drawable/ic_lightbulb_outline_black_48dp"
+                android:tint="@color/red"/>
+
+            <ImageView
+                android:id="@+id/check_battery"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:layout_marginEnd="6dp"
+                android:src="@drawable/ic_battery_alert"
+                android:tint="@color/red"/>
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/controllers"
+            android:layout_width="match_parent"
+            android:layout_height="45dp"
+
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"
+            android:gravity="center"
+            android:orientation="horizontal">
+
+            <TextView
+                android:id="@+id/device_name"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerHorizontal="true"
+                android:maxLines="1"
+                android:text="UART"
+                android:textAllCaps="true"
+                android:textAppearance="?android:attr/textAppearanceLarge"
+                android:visibility="gone"/>
+
+            <Button
+                android:id="@+id/action_connect"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:onClick="onConnectClicked"
+                android:text="@string/action_connect"/>
+
+            <Button
+                android:id="@+id/start_capture"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="CAPTURE DATA"
+                android:visibility="visible"/>
+
+            <Button
+                android:id="@+id/button_check_led_1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="LED"
+                android:visibility="visible"/>
+
+            <Button
+                android:id="@+id/streaming_mode"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:onClick="onStreamingModeClicked"
+                android:text="@string/streaming_mode"/>
+
+            <Button
+                android:id="@+id/shutdown"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/shutdown"/>
+
+        </LinearLayout>
+    </LinearLayout>
+</RelativeLayout>

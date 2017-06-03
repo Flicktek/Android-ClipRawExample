@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<resources>
+    <color name="featureTitleColor">#939597</color>
+    <color name="actionBarColor">#009CDE</color>
+    <color name="actionBarColorDark">#0081B7</color>
+    <color name="backgroundColor">#E6E7E8</color>
+
+    <color name="dark_orange">#9E3F1E</color>
+    <color name="light_orange">#EFB5A0</color>
+    <color name="headerBackgroundColor">#009ada</color>
+    <color name="headerBackgroundColorDark">#0081B7</color>
+    <color name="headerTextColor">#FFFFFF</color>
+    <color name="actionBarMenuTextColor">#FFFFFF</color>
+    
+    <color name="darkGray">#AAABAF</color>
+    <color name="lightGray">#F6F6F6</color>
+
+    <color name="bg1">#F6F6F6</color>
+    <color name="bg2">#3f69b2</color>
+
+    <color name="text">#555555</color>
+    <color name="text_button">#F6F6F6</color>
+
+    <color name="bgOk">#abfcab</color>
+    <color name="bgError">#ff9c9c</color>
+
+    <color name="dashColor">#1d1d1d</color>
+    <color name="dashTextColor">#F6F6F6</color>
+    <color name="dashHighlight">#3f69b2</color>
+
+    <color name="dark_grey">#1d1d1d</color>
+    <color name="light_grey">#6d6d6d</color>
+
+    <color name="black_54p">#8A000000</color>
+    <color name="black_86p">#DE000000</color>
+
+    <color name="green">#00C853</color>
+    <color name="grey">#757575</color>
+
+    <color name="orange">#FF6D3F</color>
+    <color name="white">#ffffff</color>
+    <color name="black">#000000</color>
+</resources>

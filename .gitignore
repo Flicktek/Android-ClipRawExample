@@ -33,6 +33,9 @@ proguard/
 captures/
 
 # Intellij
+.gradle
+/local.properties
+/.idea
 *.iml
 .idea/workspace.xml
 .idea/tasks.xml
@@ -53,3 +56,7 @@ google-services.json
 freeline.py
 freeline/
 freeline_project_description.json
+
+.DS_Store
+
+/key*

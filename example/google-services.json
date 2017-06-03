@@ -1,0 +1,45 @@
+{
+  "project_info": {
+    "project_number": "612694538100",
+    "firebase_url": "https://flicktek-example.firebaseio.com",
+    "project_id": "flicktek-example",
+    "storage_bucket": "flicktek-example.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:612694538100:android:52c41dcb8c6c026f",
+        "android_client_info": {
+          "package_name": "com.flicktek.example"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "612694538100-r42pu9enu14kdp214b0ch8ms0qju1dd4.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCtIyb3u0rfhS5hcxrtxUiquAYwnMT4qa0"
+        }
+      ],
+      "services": {
+         "analytics_service": {
+          "status": 2,
+          "analytics_property": {
+            "tracking_id": "UA-100336614-1"
+          }
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

@@ -53,10 +53,9 @@ import java.util.Random;
 import static java.util.Locale.US;
 
 public class FlicktekBleFragment extends Fragment implements View.OnClickListener {
-    protected static final String TAG = "SlideFragment";
+    protected static final String TAG = "BleFragment";
     protected static final String ARG_JSON = "JSON";
     protected static final String ARG_EXTRA = "EXTRA";
-    protected static final String JSON_CONFIGURATION = "configuration";
 
     protected static final boolean REPORT_MESSAGES = false;
 
@@ -116,6 +115,25 @@ public class FlicktekBleFragment extends Fragment implements View.OnClickListene
         return myFragment;
     }
 
+    private void trackerSendScreenName(String s) {
+        if (mainActivity.mTracker == null)
+            return;
+
+        mainActivity.mTracker.setScreenName(s);
+        mainActivity.mTracker.send(new HitBuilders.ScreenViewBuilder().build());
+    }
+
+    public void trackerSend(String action) {
+        if (mainActivity.mTracker == null)
+            return;
+
+        mainActivity.mTracker.send(new HitBuilders.EventBuilder()
+                .setCategory("Example")
+                .setAction(action)
+                .setLabel(FlicktekManager.getInstance().getMacAddress())
+                .build());
+    }
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -128,14 +146,10 @@ public class FlicktekBleFragment extends Fragment implements View.OnClickListene
             String configuration_json = getArguments().getString(ARG_JSON);
             config = Helpers.getJsonFromResources((MainActivity) getActivity(), configuration_json);
         } catch (Exception e) {
-            //e.printStackTrace();
             Log.e(TAG, "Failed parsing JSON");
         }
 
-        if (mainActivity.mTracker != null) {
-            mainActivity.mTracker.setScreenName("R&D Sensors ");
-            mainActivity.mTracker.send(new HitBuilders.ScreenViewBuilder().build());
-        }
+        trackerSendScreenName("Launch");
 
         if (FlicktekManager.getInstance().isHandshakeOk())
             FlicktekCommands.getInstance().setStartSensorCapturing(true);
@@ -205,6 +219,7 @@ public class FlicktekBleFragment extends Fragment implements View.OnClickListene
                 FlicktekCommands.getInstance().
                         writeSingleCommand(FlicktekCommands.COMMAND_ENABLE, 'b');
                 check_device_successful();
+                trackerSend("Led");
             }
         });
 
@@ -218,12 +233,14 @@ public class FlicktekBleFragment extends Fragment implements View.OnClickListene
                 }
 
                 mTriggerMode = !mTriggerMode;
+                trackerSend("Capture");
             }
         });
 
         mShutdown.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(final View v) {
+                trackerSend("Shutdown");
                 FlicktekCommands.getInstance().writeShutdown();
             }
         });
@@ -400,6 +417,7 @@ public class FlicktekBleFragment extends Fragment implements View.OnClickListene
             if (check_lines.getVisibility() == View.VISIBLE) {
                 check_device_successful();
                 check_lines.setVisibility(View.INVISIBLE);
+                trackerSend("Sensors centered");
             }
         }
 
@@ -428,6 +446,7 @@ public class FlicktekBleFragment extends Fragment implements View.OnClickListene
     public void onGesture(int gesture) {
         mGestureDetected = gesture;
 
+        trackerSend("Gesture " + gesture);
         if (mTriggerCapturing) {
             Log.v(TAG, "+++++++++++ STOP CAPTURING +++++++++");
             mTriggerCapturing = false;
@@ -439,7 +458,6 @@ public class FlicktekBleFragment extends Fragment implements View.OnClickListene
 
     @Override
     public void onResume() {
-
         EventBus.getDefault().register(this);
         super.onResume();
 
@@ -553,7 +571,6 @@ public class FlicktekBleFragment extends Fragment implements View.OnClickListene
 
     @Override
     public void onPause() {
-
         super.onPause();
 
         mHandler.removeCallbacks(mTimer);
@@ -659,6 +676,8 @@ public class FlicktekBleFragment extends Fragment implements View.OnClickListene
         samples_captured = 0;
         captureUnixTime = System.currentTimeMillis();
         mCaptureText.setVisibility(View.VISIBLE);
+
+        trackerSend("Create file");
     }
 
     protected void writeToFile(String data) {
@@ -679,6 +698,8 @@ public class FlicktekBleFragment extends Fragment implements View.OnClickListene
 
             Log.e("Exception", "File write failed: " + e.toString());
         }
+
+        trackerSend("Write to file");
     }
 
     protected boolean canWriteToFlash() {
@@ -732,7 +753,6 @@ public class FlicktekBleFragment extends Fragment implements View.OnClickListene
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onGesturePerformed(FlicktekCommands.onGestureEvent gestureEvent) {
-
         if (mTriggerCapturing) {
             Log.v(TAG, "+++++++++++ GESTURE STOP CAPTURING +++++++++");
             mTriggerCapturing = false;
@@ -753,6 +773,11 @@ public class FlicktekBleFragment extends Fragment implements View.OnClickListene
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onBatteryLevel(FlicktekCommands.onBatteryEvent batteryEvent) {
         check_battery.setVisibility(View.INVISIBLE);
+
+        if (check_battery.getVisibility() == View.VISIBLE) {
+            trackerSend("Battery OK");
+        }
+
         mainActivity.updateBattery(batteryEvent.value);
     }
 
@@ -761,11 +786,13 @@ public class FlicktekBleFragment extends Fragment implements View.OnClickListene
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onDeviceButtonPressed(FlicktekCommands.onButtonPressed event) {
         check_button.setVisibility(View.INVISIBLE);
+        trackerSend("Button OK");
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onVersion(FlicktekCommands.onVersionRequested event) {
         check_connect.setVisibility(View.INVISIBLE);
+        trackerSend("Version " + event.value);
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
@@ -785,6 +812,7 @@ public class FlicktekBleFragment extends Fragment implements View.OnClickListene
 
         }
 
+        trackerSend("Device " + event.name);
         samplingRateUnixTime = 0;
         samples_arrived = 0;
     }
@@ -795,9 +823,13 @@ public class FlicktekBleFragment extends Fragment implements View.OnClickListene
         tv_device_status.setText("Connecting");
     }
 
+    boolean finished_testing = false;
+
     void check_device_successful() {
-        if (check_connect.getVisibility() == View.VISIBLE)
+        if (check_connect.getVisibility() == View.VISIBLE) {
+            finished_testing = false;
             return;
+        }
 
         if (check_button.getVisibility() == View.VISIBLE)
             return;
@@ -821,16 +853,20 @@ public class FlicktekBleFragment extends Fragment implements View.OnClickListene
             mainActivity.mTracker.send(new HitBuilders.ScreenViewBuilder().build());
         }
 
-        mainActivity.runOnUiThread(new Runnable() {
-            public void run() {
-                try {
-                    Toast.makeText(mainActivity.getApplicationContext(),
-                            "TEST COMPLETED", Toast.LENGTH_SHORT).show();
-                } catch (Exception e) {
-                    e.printStackTrace();
+        if (!finished_testing) {
+            finished_testing = true;
+            mainActivity.runOnUiThread(new Runnable() {
+                public void run() {
+                    try {
+                        trackerSend("Success");
+                        Toast.makeText(mainActivity.getApplicationContext(),
+                                "TEST COMPLETED", Toast.LENGTH_SHORT).show();
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
                 }
-            }
-        });
+            });
+        }
     }
 
     boolean mSeenChargeState = false;
@@ -838,6 +874,7 @@ public class FlicktekBleFragment extends Fragment implements View.OnClickListene
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onDeviceDisconnected(DisconnectedEvent event) {
+        trackerSend("Disconnected");
         tv_device_name.setVisibility(View.GONE);
         tv_device_address.setVisibility(View.GONE);
 
@@ -871,24 +908,27 @@ public class FlicktekBleFragment extends Fragment implements View.OnClickListene
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onDeviceACK(FlicktekCommands.onDeviceACK event) {
         check_connect.setVisibility(View.INVISIBLE);
+        trackerSend("Device ACK");
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onStreamingSpeed(FlicktekCommands.onStreamingSpeed event) {
         mStreamingSpeed = event.ticks;
+        trackerSend("Stream speed " + mStreamingSpeed);
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onChargingState(FlicktekCommands.onChargingState event) {
-
         if (event.isCharging) {
             mSeenChargeState = true;
             tv_device_charging.setText("   [Charging]");
+            trackerSend("Charging");
         }
 
         if (!event.isCharging) {
             mSeenDischargeState = true;
             tv_device_charging.setText("[Discharging]");
+            trackerSend("Discharging");
         }
 
         if (mSeenDischargeState && mSeenChargeState)
@@ -900,5 +940,6 @@ public class FlicktekBleFragment extends Fragment implements View.OnClickListene
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onDeviceReady(FlicktekCommands.onDeviceReady event) {
         FlicktekCommands.getInstance().setStartSensorCapturing(true);
+        trackerSend("DeviceReady");
     }
 }

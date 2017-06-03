@@ -132,10 +132,11 @@ public class FlicktekBleFragment extends Fragment implements View.OnClickListene
             mac = "Mac N/A";
         }
 
+        String version = FlicktekManager.getInstance().getFirmwareVersion();
         mainActivity.mTracker.send(new HitBuilders.EventBuilder()
                 .setCategory(mac)
                 .setAction(action)
-                .setLabel(mac)
+                .setLabel(version)
                 .build());
     }
 
@@ -450,8 +451,6 @@ public class FlicktekBleFragment extends Fragment implements View.OnClickListene
 
     public void onGesture(int gesture) {
         mGestureDetected = gesture;
-
-        trackerSend("Gesture " + gesture);
         if (mTriggerCapturing) {
             Log.v(TAG, "+++++++++++ STOP CAPTURING +++++++++");
             mTriggerCapturing = false;
@@ -762,6 +761,8 @@ public class FlicktekBleFragment extends Fragment implements View.OnClickListene
             Log.v(TAG, "+++++++++++ GESTURE STOP CAPTURING +++++++++");
             mTriggerCapturing = false;
         }
+
+        trackerSend("Gesture " + gestureEvent.status);
 
         if (REPORT_MESSAGES) {
             Toast toast = Toast.makeText(mainActivity.getApplicationContext(), gestureEvent.status, Toast.LENGTH_SHORT);

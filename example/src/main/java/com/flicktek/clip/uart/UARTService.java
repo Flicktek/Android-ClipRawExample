@@ -296,7 +296,7 @@ public class UARTService extends BleProfileService implements UARTManagerCallbac
                     Logger.i(getLogSession(), "[Notification] Disconnect action pressed");
                     break;
                 case SOURCE_WEARABLE:
-                    Logger.i(getLogSession(), "[WEAR] '" + Constants.ACTION_DISCONNECT + "' message received");
+                    Logger.i(getLogSession(), "[WEAR] Disconnect message received");
                     break;
             }
             if (isConnected())

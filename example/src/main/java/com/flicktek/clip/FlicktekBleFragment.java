@@ -123,6 +123,24 @@ public class FlicktekBleFragment extends Fragment implements View.OnClickListene
         mainActivity.mTracker.send(new HitBuilders.ScreenViewBuilder().build());
     }
 
+    public void trackerSendValue(String action, int value) {
+        if (mainActivity.mTracker == null)
+            return;
+
+        String mac = FlicktekManager.getInstance().getMacAddress();
+        if (mac == null) {
+            mac = "Mac N/A";
+        }
+
+        String version = FlicktekManager.getInstance().getFirmwareVersion();
+        mainActivity.mTracker.send(new HitBuilders.EventBuilder()
+                .setCategory(mac)
+                .setAction(action)
+                .setLabel(version)
+                .setValue(value)
+                .build());
+    }
+
     public void trackerSend(String action) {
         if (mainActivity.mTracker == null)
             return;
@@ -783,6 +801,8 @@ public class FlicktekBleFragment extends Fragment implements View.OnClickListene
         if (check_battery.getVisibility() == View.VISIBLE) {
             trackerSend("Battery OK");
         }
+
+        trackerSendValue("Battery", batteryEvent.value);
 
         mainActivity.updateBattery(batteryEvent.value);
     }

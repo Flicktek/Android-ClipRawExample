@@ -1167,6 +1167,9 @@ public abstract class BleManager<E extends BleManagerCallbacks> implements ILogg
 					if (Build.VERSION.SDK_INT < Build.VERSION_CODES.N)
 						mInitQueue.addFirst(Request.newEnableServiceChangedIndicationsRequest());
 
+					if (gatt.getDevice().getBondState() == BluetoothDevice.BOND_BONDED)
+					 	FlicktekCommands.getInstance().onReadyToSendData(false);
+
 					mOperationInProgress = false;
 					nextRequest();
 				} else {
